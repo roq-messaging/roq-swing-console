@@ -80,7 +80,7 @@ public class RoQDesktop {
 		JToolBar toolBar = new JToolBar("Still draggable");
         frame.getContentPane().add(toolBar, BorderLayout.PAGE_START);
         
-        ImageIcon icon = createImageIcon("icons/door_out.png","get me out of here");
+        ImageIcon icon = createImageIcon("/icons/door_out.png","get me out of here");
         JButton exitTool = new JButton();
         if (icon==null)
         	exitTool.setText("Exit");
@@ -91,7 +91,7 @@ public class RoQDesktop {
         }});
         toolBar.add(exitTool);
         
-        icon = createImageIcon("icons/arrow_rotate_clockwise.png", "more data, more data");
+        icon = createImageIcon("/icons/arrow_rotate_clockwise.png", "more data, more data");
         refreshTool = new JButton();
         if (icon==null)
         	refreshTool.setText("Refresh");
@@ -104,7 +104,7 @@ public class RoQDesktop {
         
         toolBar.addSeparator();
         
-        icon = createImageIcon("icons/table_multiple.png", "Look at my queues");
+        icon = createImageIcon("/icons/table_multiple.png", "Look at my queues");
         showQueues = new JButton();
         if (icon==null)
         	showQueues.setText("Queues management");
@@ -116,7 +116,7 @@ public class RoQDesktop {
         }});
         toolBar.add(showQueues);
         
-        icon = createImageIcon("icons/chart_organisation.png", "That's my cluster");
+        icon = createImageIcon("/icons/chart_organisation.png", "That's my cluster");
         showCluster = new JButton();
         if (icon==null)
         	showCluster.setText("Cluster management");
