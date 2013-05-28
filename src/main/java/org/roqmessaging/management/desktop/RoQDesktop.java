@@ -146,6 +146,10 @@ public class RoQDesktop {
 		return toolBar;
 	}
 	
+	JFrame getMainFrame(){
+		return frame;
+	}
+	
 	private void setMenuState(boolean connected){
 		refreshTool.setEnabled(connected);
 		showQueues.setEnabled(connected);

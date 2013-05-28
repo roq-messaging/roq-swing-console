@@ -5,11 +5,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.table.DefaultTableModel;
 
+import org.roqmessaging.management.desktop.wsclient.HostList;
+import org.roqmessaging.management.desktop.wsclient.Message;
 import org.roqmessaging.management.desktop.wsclient.QueueList;
-import org.roqmessaging.management.desktop.wsclient.WebServiceClient;
 
 /**
  * The main panel that displays the different RoQ network elements that the user can manage
@@ -160,14 +162,52 @@ public class QueueManagementPanel extends AbstractManagementPanel<QueueList> {
 	}
 	
 	@Override
-	public void refreshData(){
-		WebServiceClient queueData = new WebServiceClient(desktop.getConnectionURL());
-		QueueList list = queueData.listQueues();
+	public synchronized void refreshData(){
+		QueueList list = client.listQueues();
 		setData(list);
 	}
 	
 	private void createQueue(){
-		//TODO: create the queue
+		//create the queue: queue create [name] [host] 
+		HostList hl = client.listHosts();
+		if (hl==null){
+			JOptionPane.showMessageDialog(desktop.getMainFrame(), "Error: unable to get list of hosts from server", 
+					"Create new Queue", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		if (!hl.isSuccess()){
+			JOptionPane.showMessageDialog(desktop.getMainFrame(), "Error: the server was not able to build the list of hosts", 
+					"Create new Queue", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		String[] hosts = hl.getRows().toArray(new String[hl.getRows().size()]);
+		if (hosts==null || hosts.length==0){
+			JOptionPane.showMessageDialog(desktop.getMainFrame(), "Error: no host currently registered", 
+					"Create new Queue", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		QueueCreateDialog dialog = new QueueCreateDialog(desktop.getMainFrame(), hosts);
+		String name = dialog.getName().trim();
+		String host = dialog.getHost();
+		if (name==null || name.length()==0){
+			JOptionPane.showMessageDialog(desktop.getMainFrame(), "Error: please specify a name for the new queue", 
+					"Create new Queue", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		if (host==null || host.length()==0){
+			JOptionPane.showMessageDialog(desktop.getMainFrame(), "Error: please select a host for the new queue", 
+					"Create new Queue", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		Message result = client.createQueue(name, host);
+		if (result.isSuccess()){
+			JOptionPane.showMessageDialog(desktop.getMainFrame(), "Queue created", 
+					"Create new Queue", JOptionPane.INFORMATION_MESSAGE);
+		}else{
+			JOptionPane.showMessageDialog(desktop.getMainFrame(), "Error: queue could not be created: "+result.getMessage(), 
+					"Create new Queue", JOptionPane.ERROR_MESSAGE);
+		}
+		refreshData();
 	}
 
 	private void removeQueue(){

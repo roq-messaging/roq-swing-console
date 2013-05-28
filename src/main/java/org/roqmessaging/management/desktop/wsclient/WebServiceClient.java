@@ -52,6 +52,20 @@ public class WebServiceClient {
 		return list;
 	}
 	
+	/**
+	 * Asks the server to create a new queue
+	 */
+	public Message createQueue(String name, String host){
+		WebResource res = service.path("queues").queryParam("Name", name).queryParam("Host", host);
+		System.out.println("res = "+res.toString());
+		String query = res.
+				accept(MediaType.APPLICATION_JSON).post(String.class);
+		System.out.println("serialized result:\n"+query);
+		Gson gson = new Gson();
+		Message result = gson.fromJson(query, Message.class);
+		return result;
+	}
+	
 	
 	/**
 	 * Provides the list of hosts

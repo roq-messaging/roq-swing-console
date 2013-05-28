@@ -9,6 +9,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import org.roqmessaging.management.desktop.wsclient.WebServiceClient;
+
 public abstract class AbstractManagementPanel<T extends Object> extends JPanel implements ManagementPanel<T>{
 
 	public static final int REFRESH_RATE = 60*1000;
@@ -27,6 +29,7 @@ public abstract class AbstractManagementPanel<T extends Object> extends JPanel i
 	protected DefaultTableModel dataModel;
 	protected JTable table;
 	protected RoQDesktop desktop;
+	protected WebServiceClient client;
 	
 	AbstractManagementPanel(RoQDesktop desktop){
 		this.desktop = desktop;
@@ -40,6 +43,8 @@ public abstract class AbstractManagementPanel<T extends Object> extends JPanel i
 		refreshTimer = new Timer(true);
 		refreshTimer.scheduleAtFixedRate(new RefreshTask(), REFRESH_RATE, REFRESH_RATE);
 		
+		client = new WebServiceClient(desktop.getConnectionURL());
+
 	}
 	
 	abstract void initTableModel();
