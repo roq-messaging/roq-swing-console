@@ -22,6 +22,11 @@ import javax.swing.UIManager;
  */
 public class RoQDesktop {
 	
+	public static final String ICON_DISCONNECT = "/icons/door_out.png";
+	public static final String ICON_REFRESH = "/icons/arrow_rotate_clockwise.png";
+	public static final String ICON_QUEUES_PANEL = "/icons/table_multiple.png";
+	public static final String ICON_CLUSTER_PANEL = "/icons/chart_organisation.png";
+	
 	private JFrame frame;
 	private JPanel mainPanel;
 	private String connectionString;
@@ -80,7 +85,7 @@ public class RoQDesktop {
 		JToolBar toolBar = new JToolBar("Still draggable");
         frame.getContentPane().add(toolBar, BorderLayout.PAGE_START);
         
-        ImageIcon icon = createImageIcon("/icons/door_out.png","get me out of here");
+        ImageIcon icon = createImageIcon(ICON_DISCONNECT,"get me out of here");
         JButton exitTool = new JButton();
         if (icon==null)
         	exitTool.setText("Exit");
@@ -91,7 +96,7 @@ public class RoQDesktop {
         }});
         toolBar.add(exitTool);
         
-        icon = createImageIcon("/icons/arrow_rotate_clockwise.png", "more data, more data");
+        icon = createImageIcon(ICON_REFRESH, "more data, more data");
         refreshTool = new JButton();
         if (icon==null)
         	refreshTool.setText("Refresh");
@@ -104,7 +109,7 @@ public class RoQDesktop {
         
         toolBar.addSeparator();
         
-        icon = createImageIcon("/icons/table_multiple.png", "Look at my queues");
+        icon = createImageIcon(ICON_QUEUES_PANEL, "Look at my queues");
         showQueues = new JButton();
         if (icon==null)
         	showQueues.setText("Queues management");
@@ -116,7 +121,7 @@ public class RoQDesktop {
         }});
         toolBar.add(showQueues);
         
-        icon = createImageIcon("/icons/chart_organisation.png", "That's my cluster");
+        icon = createImageIcon(ICON_CLUSTER_PANEL, "That's my cluster");
         showCluster = new JButton();
         if (icon==null)
         	showCluster.setText("Cluster management");
