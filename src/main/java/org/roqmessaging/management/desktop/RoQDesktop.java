@@ -82,10 +82,10 @@ public class RoQDesktop {
 	}
 	
 	private void setToolBar(){
-		JToolBar toolBar = new JToolBar("Still draggable");
+		toolBar = new JToolBar("Main toolbar");
         frame.getContentPane().add(toolBar, BorderLayout.PAGE_START);
         
-        ImageIcon icon = createImageIcon(ICON_DISCONNECT,"get me out of here");
+        ImageIcon icon = DesktopUtils.createImageIcon(ICON_DISCONNECT,"get me out of here");
         JButton exitTool = new JButton();
         if (icon==null)
         	exitTool.setText("Exit");
@@ -96,7 +96,7 @@ public class RoQDesktop {
         }});
         toolBar.add(exitTool);
         
-        icon = createImageIcon(ICON_REFRESH, "more data, more data");
+        icon = DesktopUtils.createImageIcon(ICON_REFRESH, "more data, more data");
         refreshTool = new JButton();
         if (icon==null)
         	refreshTool.setText("Refresh");
@@ -109,25 +109,29 @@ public class RoQDesktop {
         
         toolBar.addSeparator();
         
-        icon = createImageIcon(ICON_QUEUES_PANEL, "Look at my queues");
+        icon = DesktopUtils.createImageIcon(ICON_QUEUES_PANEL, "Look at my queues");
         showQueues = new JButton();
         if (icon==null)
         	showQueues.setText("Queues management");
         else
         	showQueues.setIcon(icon);
         showQueues.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){
+        	if (panel instanceof QueueManagementPanel)
+        		return;
         	hideCurrentPanel();
         	showQueuePanel();
         }});
         toolBar.add(showQueues);
         
-        icon = createImageIcon(ICON_CLUSTER_PANEL, "That's my cluster");
+        icon = DesktopUtils.createImageIcon(ICON_CLUSTER_PANEL, "That's my cluster");
         showCluster = new JButton();
         if (icon==null)
         	showCluster.setText("Cluster management");
         else
         	showCluster.setIcon(icon);
         showCluster.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){
+        	if (panel instanceof ClusterManagementPanel)
+        		return;
         	hideCurrentPanel();
         	showClusterPanel();
         }});
@@ -197,14 +201,6 @@ public class RoQDesktop {
 		panel = null;
 	}
 
-	protected ImageIcon createImageIcon(String path, String description) {
-		java.net.URL imgURL = getClass().getResource(path);
-		if (imgURL != null) {
-			return new ImageIcon(imgURL, description);
-		} else {
-			System.err.println("Couldn't find file: " + path);
-			return null;
-		}
-	}
+	
 
 }
