@@ -27,6 +27,11 @@ public class RoQDesktop {
 	public static final String ICON_QUEUES_PANEL = "/icons/table_multiple.png";
 	public static final String ICON_CLUSTER_PANEL = "/icons/chart_organisation.png";
 	
+	public static final String TEXT_QUEUES_MANAGEMENT = "Queues management";
+	public static final String TEXT_CLUSTER_MANAGEMENT = "Cluster management";
+	public static final String TEXT_EXIT = "Exit";
+	public static final String TEXT_REFRESH = "Refresh";
+	
 	private JFrame frame;
 	private JPanel mainPanel;
 	private String connectionString;
@@ -88,9 +93,11 @@ public class RoQDesktop {
         ImageIcon icon = DesktopUtils.createImageIcon(ICON_DISCONNECT,"get me out of here");
         JButton exitTool = new JButton();
         if (icon==null)
-        	exitTool.setText("Exit");
-        else
+        	exitTool.setText(TEXT_EXIT);
+        else {
         	exitTool.setIcon(icon);
+        	exitTool.setToolTipText(TEXT_EXIT);
+        }
         exitTool.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){
         	System.exit(0);
         }});
@@ -99,9 +106,11 @@ public class RoQDesktop {
         icon = DesktopUtils.createImageIcon(ICON_REFRESH, "more data, more data");
         refreshTool = new JButton();
         if (icon==null)
-        	refreshTool.setText("Refresh");
-        else
+        	refreshTool.setText(TEXT_REFRESH);
+        else {
         	refreshTool.setIcon(icon);
+        	refreshTool.setToolTipText(TEXT_REFRESH);
+        }
         refreshTool.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){
         	panel.refreshData();
         }});
@@ -112,9 +121,11 @@ public class RoQDesktop {
         icon = DesktopUtils.createImageIcon(ICON_QUEUES_PANEL, "Look at my queues");
         showQueues = new JButton();
         if (icon==null)
-        	showQueues.setText("Queues management");
-        else
+        	showQueues.setText(TEXT_QUEUES_MANAGEMENT);
+        else {
         	showQueues.setIcon(icon);
+        	showQueues.setToolTipText(TEXT_QUEUES_MANAGEMENT);
+        }
         showQueues.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){
         	if (panel instanceof QueueManagementPanel)
         		return;
@@ -126,9 +137,11 @@ public class RoQDesktop {
         icon = DesktopUtils.createImageIcon(ICON_CLUSTER_PANEL, "That's my cluster");
         showCluster = new JButton();
         if (icon==null)
-        	showCluster.setText("Cluster management");
-        else
+        	showCluster.setText(TEXT_CLUSTER_MANAGEMENT);
+        else {
         	showCluster.setIcon(icon);
+        	showCluster.setToolTipText(TEXT_CLUSTER_MANAGEMENT);
+        }
         showCluster.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){
         	if (panel instanceof ClusterManagementPanel)
         		return;
