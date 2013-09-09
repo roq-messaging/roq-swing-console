@@ -241,11 +241,30 @@ public class QueueManagementPanel extends AbstractManagementPanel<QueueList> {
 	}
 
 	private void startQueue(){
-		//TODO: start the queue
+		changeQueueState(true);
 	}
 
 	private void stopQueue(){
-		//TODO: stop the queue
+		changeQueueState(false);
+	}
+	
+	private void changeQueueState(boolean start){
+		int selectedRow = table.getSelectedRow();
+		if (selectedRow==-1)
+		{
+			JOptionPane.showMessageDialog(desktop.getMainFrame(), "Please select a queue in the table");
+			return;
+		}
+		String queueId = (String)dataModel.getValueAt(selectedRow, 0); // col 0 = id
+		Message result = client.changeQueueState(queueId, start);
+		if (result.isSuccess()){
+			JOptionPane.showMessageDialog(desktop.getMainFrame(), "Queue modified", 
+					"Modify Queue", JOptionPane.INFORMATION_MESSAGE);
+		}else{
+			JOptionPane.showMessageDialog(desktop.getMainFrame(), "Error: queue could not be modified: "+result.getMessage(), 
+					"Modify Queue", JOptionPane.ERROR_MESSAGE);
+		}
+		refreshData();
 	}
 
 	

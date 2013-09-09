@@ -78,6 +78,17 @@ public class WebServiceClient {
 		return result;
 	}
 	
+	public Message changeQueueState(String queueId, boolean start){
+		Gson gson = new Gson();
+		WebResource res = service.path("queues").path(queueId);
+		QueueState queueState = new QueueState(start);
+		String input = gson.toJson(queueState);
+		String query = res.
+				type(MediaType.APPLICATION_JSON).put(String.class, input);
+		Message result = gson.fromJson(query, Message.class);
+		return result;
+	}
+	
 	
 	/**
 	 * Provides the list of hosts
