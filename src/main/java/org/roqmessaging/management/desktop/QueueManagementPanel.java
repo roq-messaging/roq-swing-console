@@ -228,16 +228,19 @@ public class QueueManagementPanel extends AbstractManagementPanel<QueueList> {
 		}
 		String queueId = (String)dataModel.getValueAt(selectedRow, 0); // col 0 = id
 		String queueName = (String)dataModel.getValueAt(selectedRow, 1); // col 1 = name
-		JOptionPane.showConfirmDialog(desktop.getMainFrame(), "Please confirm deletion of queue: "+queueName);
-		Message result = client.deleteQueue(queueId);
-		if (result.isSuccess()){
-			JOptionPane.showMessageDialog(desktop.getMainFrame(), "Queue deleted", 
-					"Delete Queue", JOptionPane.INFORMATION_MESSAGE);
-		}else{
-			JOptionPane.showMessageDialog(desktop.getMainFrame(), "Error: queue could not be deleted: "+result.getMessage(), 
-					"Delete Queue", JOptionPane.ERROR_MESSAGE);
+		int option = JOptionPane.showConfirmDialog(desktop.getMainFrame(), "Please confirm deletion of queue: "+queueName, 
+				"Queue deletion", JOptionPane.OK_CANCEL_OPTION);
+		if (option == JOptionPane.OK_OPTION) {
+			Message result = client.deleteQueue(queueId);
+			if (result.isSuccess()){
+				JOptionPane.showMessageDialog(desktop.getMainFrame(), "Queue deleted", 
+						"Delete Queue", JOptionPane.INFORMATION_MESSAGE);
+			}else{
+				JOptionPane.showMessageDialog(desktop.getMainFrame(), "Error: queue could not be deleted: "+result.getMessage(), 
+						"Delete Queue", JOptionPane.ERROR_MESSAGE);
+			}
+			refreshData();
 		}
-		refreshData();
 	}
 
 	private void startQueue(){
