@@ -56,11 +56,23 @@ public class WebServiceClient {
 	 * Asks the server to create a new queue
 	 */
 	public Message createQueue(String name, String host){
-		WebResource res = service.path("queues").queryParam("Name", name).queryParam("Host", host);
-		System.out.println("res = "+res.toString());
+		Gson gson = new Gson();
+		WebResource res = service.path("queues");
+		QueueCreator creator = new QueueCreator(name, host);
+		String input = gson.toJson(creator);
 		String query = res.
-				accept(MediaType.APPLICATION_JSON).post(String.class);
-		System.out.println("serialized result:\n"+query);
+				type(MediaType.APPLICATION_JSON).post(String.class, input);
+		Message result = gson.fromJson(query, Message.class);
+		return result;
+	}
+	
+	/**
+	 * Asks the server to remove a queue
+	 * @param queueId the id of the queue to remove
+	 * @return the message returned by the server
+	 */
+	public Message deleteQueue(String queueId){
+		String query = service.path("queues").path(queueId).type(MediaType.APPLICATION_JSON).delete(String.class);
 		Gson gson = new Gson();
 		Message result = gson.fromJson(query, Message.class);
 		return result;

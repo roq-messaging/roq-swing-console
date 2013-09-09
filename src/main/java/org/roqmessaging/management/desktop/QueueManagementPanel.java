@@ -108,10 +108,13 @@ public class QueueManagementPanel extends AbstractManagementPanel<QueueList> {
         createQueue = new JButton();
         if (icon==null)
         	createQueue.setText(TEXT_CREATE_QUEUE);
-        else
+        else {
         	createQueue.setIcon(icon);
+        	createQueue.setToolTipText(TEXT_CREATE_QUEUE);
+        }
         createQueue.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){
         	createQueue();
+        	refreshData();
         }});
         toolBar.add(createQueue);
         
@@ -119,8 +122,10 @@ public class QueueManagementPanel extends AbstractManagementPanel<QueueList> {
         removeQueue = new JButton();
         if (icon==null)
         	removeQueue.setText(TEXT_REMOVE_QUEUE);
-        else
+        else {
         	removeQueue.setIcon(icon);
+        	removeQueue.setToolTipText(TEXT_REMOVE_QUEUE);
+        }
         removeQueue.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){
         	removeQueue();
         }});
@@ -130,8 +135,10 @@ public class QueueManagementPanel extends AbstractManagementPanel<QueueList> {
         startQueue = new JButton();
         if (icon==null)
         	startQueue.setText(TEXT_START_QUEUE);
-        else
+        else {
         	startQueue.setIcon(icon);
+        	startQueue.setToolTipText(TEXT_START_QUEUE);
+        }
         startQueue.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){
         	startQueue();
         }});
@@ -141,8 +148,10 @@ public class QueueManagementPanel extends AbstractManagementPanel<QueueList> {
         stopQueue = new JButton();
         if (icon==null)
         	stopQueue.setText(TEXT_STOP_QUEUE);
-        else
+        else {
         	stopQueue.setIcon(icon);
+        	stopQueue.setToolTipText(TEXT_STOP_QUEUE);
+        }
         stopQueue.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){
         	stopQueue();
         }});
@@ -211,7 +220,24 @@ public class QueueManagementPanel extends AbstractManagementPanel<QueueList> {
 	}
 
 	private void removeQueue(){
-		//TODO: remove the queue
+		int selectedRow = table.getSelectedRow();
+		if (selectedRow==-1)
+		{
+			JOptionPane.showMessageDialog(desktop.getMainFrame(), "Please select a queue to delete in the table");
+			return;
+		}
+		String queueId = (String)dataModel.getValueAt(selectedRow, 0); // col 0 = id
+		String queueName = (String)dataModel.getValueAt(selectedRow, 1); // col 1 = name
+		JOptionPane.showConfirmDialog(desktop.getMainFrame(), "Please confirm deletion of queue: "+queueName);
+		Message result = client.deleteQueue(queueId);
+		if (result.isSuccess()){
+			JOptionPane.showMessageDialog(desktop.getMainFrame(), "Queue deleted", 
+					"Delete Queue", JOptionPane.INFORMATION_MESSAGE);
+		}else{
+			JOptionPane.showMessageDialog(desktop.getMainFrame(), "Error: queue could not be deleted: "+result.getMessage(), 
+					"Delete Queue", JOptionPane.ERROR_MESSAGE);
+		}
+		refreshData();
 	}
 
 	private void startQueue(){
